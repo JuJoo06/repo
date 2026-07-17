@@ -21,70 +21,75 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #0a1a2a; }
+  html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #16130f; }
   button, input { font-family: inherit; }
   .hi { width: 1.15em; height: 1.15em; display: inline-block; vertical-align: -0.2em; flex-shrink: 0; }
   #app { position: fixed; inset: 0; }
   canvas { display: block; }
 
-  .overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 50; background: rgba(5, 15, 30, 0.75); backdrop-filter: blur(4px); }
+  .overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 50; background: rgba(24, 19, 13, 0.55); backdrop-filter: blur(3px); }
   .hidden { display: none !important; }
 
-  /* 시작 화면 */
-  #startScreen .card { text-align: center; color: #fff; max-width: 560px; padding: 40px; }
-  #startScreen h1 { font-size: 42px; margin-bottom: 8px; letter-spacing: 2px; }
-  #startScreen .sub { color: #9fc5e8; margin-bottom: 28px; font-size: 16px; line-height: 1.6; }
-  #startScreen input { width: 260px; padding: 12px 16px; border-radius: 10px; border: 1px solid #3a6ea5; background: rgba(255,255,255,0.1); color: #fff; font-size: 16px; text-align: center; outline: none; margin-bottom: 18px; }
-  #startScreen input::placeholder { color: #7da7cc; }
-  .btn { display: inline-block; padding: 13px 34px; border-radius: 12px; border: none; cursor: pointer; font-size: 17px; font-weight: 700; background: #ff7043; color: #fff; transition: transform .1s, background .2s; }
-  .btn:hover { background: #ff8a65; transform: translateY(-2px); }
-  .btn.secondary { background: rgba(255,255,255,0.15); }
-  .btn.secondary:hover { background: rgba(255,255,255,0.28); }
-  #startScreen .help { margin-top: 26px; color: #b8d4ee; font-size: 14px; line-height: 1.9; }
-  #startScreen .help kbd { background: rgba(255,255,255,0.15); border-radius: 5px; padding: 2px 8px; font-family: inherit; }
-  #sheetStatus { margin-top: 14px; font-size: 13px; color: #86c5a5; }
+  /* 시작 화면 — 한지 카드 */
+  #startScreen .card { text-align: center; color: #322c24; max-width: 560px; padding: 44px 40px; background: #f5eede; border: 1px solid #d9cdb2; border-radius: 16px; box-shadow: 0 18px 50px rgba(0,0,0,0.35); }
+  #startScreen h1 { font-size: 40px; margin-bottom: 10px; letter-spacing: 1px; color: #322c24; }
+  #startScreen .sub { color: #6f6553; margin-bottom: 28px; font-size: 16px; line-height: 1.6; }
+  #startScreen input { width: 260px; padding: 12px 16px; border-radius: 10px; border: 1px solid #c8bb9c; background: #fffdf6; color: #322c24; font-size: 16px; text-align: center; outline: none; margin-bottom: 18px; }
+  #startScreen input:focus { border-color: #a8503e; }
+  #startScreen input::placeholder { color: #a89b81; }
+  .btn { display: inline-block; padding: 13px 34px; border-radius: 10px; border: none; cursor: pointer; font-size: 17px; font-weight: 700; background: #a8503e; color: #f8f3e7; transition: transform .1s, background .2s; }
+  .btn:hover { background: #b96450; transform: translateY(-2px); }
+  .btn.secondary { background: #e6dcc4; color: #4d4536; }
+  .btn.secondary:hover { background: #d9cdae; }
+  #startScreen .help { margin-top: 26px; color: #6f6553; font-size: 14px; line-height: 1.9; }
+  #startScreen .help kbd { background: #e6dcc4; color: #4d4536; border-radius: 5px; padding: 2px 8px; font-family: inherit; }
+  #sheetStatus { margin-top: 14px; font-size: 13px; color: #587d5b; }
 
-  /* HUD */
-  #hud { position: fixed; top: 16px; left: 16px; z-index: 20; color: #fff; background: rgba(8, 22, 40, 0.72); border-radius: 14px; padding: 14px 18px; min-width: 230px; }
-  #hud h2 { font-size: 15px; color: #ffd54f; margin-bottom: 10px; }
+  /* HUD — 한지 카드 */
+  #hud { position: fixed; top: 16px; left: 16px; z-index: 20; color: #322c24; background: rgba(245, 238, 222, 0.93); border: 1px solid rgba(150, 134, 102, 0.45); border-radius: 12px; padding: 14px 18px; min-width: 230px; box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+  #hud h2 { font-size: 15px; color: #7c4a33; margin-bottom: 10px; }
   #hud .site-row { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 0; }
-  #hud .dot { width: 11px; height: 11px; border-radius: 50%; background: #ff3d4e; box-shadow: 0 0 6px #ff3d4e; flex-shrink: 0; }
-  #hud .dot.done { background: #2ecc71; box-shadow: 0 0 6px #2ecc71; }
-  #hud .dist { margin-left: auto; color: #9fc5e8; font-size: 12px; }
-  #hud .key { color: #7da7cc; font-size: 11px; margin-left: 4px; }
+  #hud .dot { width: 10px; height: 10px; border-radius: 50%; background: #a8503e; flex-shrink: 0; }
+  #hud .dot.done { background: #5d8a5f; }
+  #hud .dist { margin-left: auto; color: #8d8168; font-size: 12px; }
+  #hud .key { color: #a89b81; font-size: 11px; margin-left: 4px; }
 
-  #minimap { position: fixed; top: 16px; right: 16px; z-index: 20; border-radius: 14px; background: rgba(8, 22, 40, 0.72); }
+  #minimap { position: fixed; top: 16px; right: 16px; z-index: 20; border-radius: 12px; background: rgba(245, 238, 222, 0.93); border: 1px solid rgba(150, 134, 102, 0.45); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
 
-  #prompt { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 20; color: #fff; background: rgba(8, 22, 40, 0.85); border: 1px solid #ffd54f; border-radius: 12px; padding: 12px 24px; font-size: 16px; }
-  #prompt kbd { background: #ffd54f; color: #1a2a3a; border-radius: 6px; padding: 2px 10px; font-weight: 700; font-family: inherit; }
+  #prompt { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 20; color: #322c24; background: rgba(245, 238, 222, 0.95); border: 1px solid #a8503e; border-radius: 10px; padding: 12px 24px; font-size: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+  #prompt kbd { background: #a8503e; color: #f8f3e7; border-radius: 6px; padding: 2px 10px; font-weight: 700; font-family: inherit; }
 
-  #controlsHint { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 15; color: rgba(255,255,255,0.65); font-size: 13px; background: rgba(8,22,40,0.5); padding: 8px 18px; border-radius: 10px; }
+  #controlsHint { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 15; color: #56503f; font-size: 13px; background: rgba(245, 238, 222, 0.7); padding: 8px 18px; border-radius: 9px; }
 
   /* 유적지 정보 / 퀴즈 패널 */
   #panel { z-index: 60; }
-  #panel .card { width: min(680px, 92vw); max-height: 86vh; overflow-y: auto; background: linear-gradient(160deg, #14304e, #0d2038); border: 1px solid #3a6ea5; border-radius: 20px; padding: 32px 36px; color: #fff; }
-  #panel .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: #ff3d4e; margin-bottom: 12px; }
-  #panel .badge.done { background: #2ecc71; }
-  #panel h2 { font-size: 26px; margin-bottom: 16px; color: #ffd54f; }
-  #panel .history { font-size: 15.5px; line-height: 1.85; color: #dceaf7; white-space: pre-line; margin-bottom: 24px; }
+  #panel .card { width: min(680px, 92vw); max-height: 86vh; overflow-y: auto; background: linear-gradient(165deg, #f8f2e4, #efe6d0); border: 1px solid #d9cdb2; border-radius: 16px; padding: 32px 36px; color: #322c24; box-shadow: 0 18px 50px rgba(0,0,0,0.35); }
+  #panel .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: #a8503e; color: #f8f3e7; margin-bottom: 12px; }
+  #panel .badge.done { background: #5d8a5f; }
+  #panel h2 { font-size: 26px; margin-bottom: 16px; color: #7c4a33; }
+  #panel figure.photo { margin: 0 0 20px; }
+  #panel figure.photo img { display: block; width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px; border: 1px solid #d9cdb2; background: #e6dcc4; }
+  #panel figure.photo figcaption { margin-top: 8px; font-size: 12.5px; line-height: 1.6; color: #8d8168; }
+  #panel figure.photo figcaption a { color: #7c4a33; }
+  #panel .history { font-size: 15.5px; line-height: 1.85; color: #4d4536; white-space: pre-line; margin-bottom: 24px; }
   #panel .actions { display: flex; gap: 12px; justify-content: flex-end; }
 
-  .quiz-progress { font-size: 13px; color: #9fc5e8; margin-bottom: 10px; }
-  .quiz-q { font-size: 19px; font-weight: 700; line-height: 1.6; margin-bottom: 20px; }
-  .quiz-opt { display: block; width: 100%; text-align: left; margin-bottom: 10px; padding: 14px 18px; border-radius: 12px; border: 1px solid #3a6ea5; background: rgba(255,255,255,0.06); color: #fff; font-size: 15.5px; cursor: pointer; transition: background .15s; }
-  .quiz-opt:hover { background: rgba(255,255,255,0.15); }
-  .quiz-opt.correct { background: #1e7d4f; border-color: #2ecc71; }
-  .quiz-opt.wrong { background: #8e2f3a; border-color: #ff3d4e; }
-  .quiz-feedback { margin: 14px 0 20px; padding: 14px 18px; border-radius: 12px; font-size: 14.5px; line-height: 1.7; }
-  .quiz-feedback.ok { background: rgba(46, 204, 113, 0.15); border: 1px solid #2ecc71; color: #a8e6c5; }
-  .quiz-feedback.no { background: rgba(255, 61, 78, 0.15); border: 1px solid #ff3d4e; color: #ffb3bb; }
+  .quiz-progress { font-size: 13px; color: #8d8168; margin-bottom: 10px; }
+  .quiz-q { font-size: 19px; font-weight: 700; line-height: 1.6; margin-bottom: 20px; color: #322c24; }
+  .quiz-opt { display: block; width: 100%; text-align: left; margin-bottom: 10px; padding: 14px 18px; border-radius: 10px; border: 1px solid #d0c3a4; background: #fffdf6; color: #322c24; font-size: 15.5px; cursor: pointer; transition: background .15s; }
+  .quiz-opt:hover { background: #f0e8d2; }
+  .quiz-opt.correct { background: #dcead6; border-color: #5d8a5f; color: #2f4a33; }
+  .quiz-opt.wrong { background: #f0d8d1; border-color: #a8503e; color: #713527; }
+  .quiz-feedback { margin: 14px 0 20px; padding: 14px 18px; border-radius: 10px; font-size: 14.5px; line-height: 1.7; }
+  .quiz-feedback.ok { background: #e4efdd; border: 1px solid #8fb28c; color: #375c3b; }
+  .quiz-feedback.no { background: #f4e0d9; border: 1px solid #c48874; color: #84402e; }
 
   /* 전체 완료 */
-  #finishScreen .card { text-align: center; color: #fff; max-width: 520px; padding: 40px; }
-  #finishScreen h1 { font-size: 36px; color: #ffd54f; margin-bottom: 16px; }
-  #finishScreen p { font-size: 16px; line-height: 1.8; color: #dceaf7; margin-bottom: 26px; }
+  #finishScreen .card { text-align: center; color: #322c24; max-width: 520px; padding: 40px; background: #f5eede; border: 1px solid #d9cdb2; border-radius: 16px; box-shadow: 0 18px 50px rgba(0,0,0,0.35); }
+  #finishScreen h1 { font-size: 36px; color: #7c4a33; margin-bottom: 16px; }
+  #finishScreen p { font-size: 16px; line-height: 1.8; color: #4d4536; margin-bottom: 26px; }
 
-  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 70; background: rgba(46, 204, 113, 0.92); color: #fff; font-weight: 700; padding: 12px 28px; border-radius: 12px; font-size: 15px; transition: opacity .4s; opacity: 0; pointer-events: none; }
+  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 70; background: rgba(93, 138, 95, 0.95); color: #f8f3e7; font-weight: 700; padding: 12px 28px; border-radius: 10px; font-size: 15px; transition: opacity .4s; opacity: 0; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
@@ -99,7 +104,7 @@
     <button id="startBtn" class="btn">탐험 시작</button>
     <div class="help">
       <kbd>W A S D</kbd> / <kbd>방향키</kbd> 이동 &nbsp; <kbd>Shift</kbd> 달리기 &nbsp; <kbd>마우스 드래그</kbd> 시점 회전<br/>
-      <kbd>E</kbd> 유적지 살펴보기 &nbsp; <kbd>1</kbd>~<kbd>4</kbd> 유적지 근처로 빠른 이동
+      <kbd>E</kbd> 유적지 입장 &nbsp; <kbd>1</kbd>~<kbd>4</kbd> 유적지 근처로 빠른 이동
     </div>
     <div id="sheetStatus"></div>
   </div>
@@ -111,7 +116,7 @@
 </div>
 <canvas id="minimap" width="190" height="140" class="hidden"></canvas>
 <div id="prompt" class="hidden"></div>
-<div id="controlsHint" class="hidden">WASD 이동 · 드래그 시점 · E 상호작용 · 1~4 빠른 이동</div>
+<div id="controlsHint" class="hidden">WASD 이동 · 드래그 시점 · E 유적지 입장 · 1~4 빠른 이동</div>
 
 <div id="panel" class="overlay hidden">
   <div class="card" id="panelCard"></div>
